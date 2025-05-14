@@ -325,7 +325,6 @@ footer {
 
 .about p {
   font-size: 1rem;
-
   text-align: left;
   margin-bottom: 32px;
   padding: 0 280px;
@@ -333,7 +332,14 @@ footer {
 
 /* Contact Page */
 .contact-section {
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
   padding: 40px 20px;
+  gap: 20px; /* Add spacing between elements */
+  background-color: #121212; /* Match the dark theme */
+  color: #e5e5e5; /* Light text for contrast */
 }
 
 .contact-section h1 {
@@ -341,14 +347,16 @@ footer {
   font-weight: bold;
   text-align: center;
   margin-bottom: 32px;
-  color: #ffffff;
+  color: #ffffff; /* Bright white for the heading */
 }
 
 .contact-form {
-  background-color: #1a1a1a;
+  background-color: #1a1a1a; /* Slightly lighter than the page background */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  width: 100%; /* Make the form responsive */
+  max-width: 600px; /* Set a maximum width for the form */
 }
 
 .contact-form label {
@@ -367,6 +375,11 @@ footer {
   border-radius: 4px;
   background-color: #121212;
   color: #e5e5e5;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: #6b6b6b; /* Subtle placeholder text */
 }
 
 .contact-form button {
