@@ -223,7 +223,6 @@ header {
   display: flex; /* Use flexbox for a single row layout */
   flex-wrap: nowrap; /* Prevent wrapping to the next row */
   gap: 10px; /* Add spacing between product cards */
-
   padding: 20px 0; /* Add some padding for spacing */
 }
 
@@ -311,23 +310,25 @@ footer {
 }
 
 /* About Page */
-.about-section {
+.about {
   padding: 40px 20px;
+  background-color: white;
+  color: #121212;
 }
 
-.about-section h1 {
+.about h1 {
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
   margin-bottom: 32px;
-  color: #ffffff;
 }
 
-.about-section p {
+.about p {
   font-size: 1rem;
-  color: #e5e5e5;
-  text-align: center;
+
+  text-align: left;
   margin-bottom: 32px;
+  padding: 0 280px;
 }
 
 /* Contact Page */
