@@ -19,7 +19,10 @@
   <body>
     <header>
       <div class="nav-container">
-        <a href="index.html" class="logo">/k^t/</a>
+        <a href="index.html" class="logo"
+          ><img src="images/_k^t  Logo_white.png" alt="/k^t/ logo"
+        /></a>
+
         <nav>
           <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -28,16 +31,25 @@
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </nav>
-        <button class="cart-btn" onclick="toggleCart()">
+        <form class="search-form" onsubmit="searchProducts(event)">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search products..."
+          />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <a href="javascript:void(0);" class="cart-btn" onclick="toggleCart()">
           <i class="fas fa-shopping-cart"></i>
           <span class="cart-count">0</span>
-        </button>
+        </a>
       </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
       <h2>Welcome to /k^t/</h2>
+      <h3>Above The Rest.</h3>
       <p>Your destination for urban clothing that stands out.</p>
       <a href="shop.html" class="btn">Shop Now</a>
     </section>
@@ -50,8 +62,11 @@
         <div class="product-card">
           <img src="images/oversized-hoodie.jpg" alt="Oversized Hoodie" />
           <h3>Oversized Hoodie</h3>
-          <p>Comfortable and stylish for all occasions.</p>
-          <span class="price">R799</span>
+          <p>
+            Stay stylish and cozy up in our ultra-soft oversized hoodies—where
+            comfort meets effortless street style.
+          </p>
+          <span class="price hoodie-price">R799</span>
           <button class="add-to-cart">Add to Cart</button>
         </div>
 
@@ -59,7 +74,11 @@
         <div class="product-card">
           <img src="images/tracksuit.jpg" alt="Tracksuit" />
           <h3>Tracksuit</h3>
-          <p>Perfect for workouts or lounging.</p>
+          <p>
+            Stay stylish and comfortable with our premium-quality
+            tracksuits—perfect for workouts or everyday wear.
+          </p>
+
           <span class="price">R1599</span>
           <button class="add-to-cart">Add to Cart</button>
         </div>
@@ -68,7 +87,10 @@
         <div class="product-card">
           <img src="images/oversized-t-shirts.jpg" alt="Basic T-Shirt" />
           <h3>Basic T-Shirt</h3>
-          <p>A wardrobe essential for everyone.</p>
+          <p>
+            A wardrobe essential for everyone. Elevate your everyday look with
+            our oversized t-shirts—relaxed fit, bold style.
+          </p>
           <span class="price">R699</span>
           <button class="add-to-cart">Add to Cart</button>
         </div>
@@ -77,7 +99,10 @@
         <div class="product-card">
           <img src="images/Camper-Cap.jpg" alt="Camper Cap" />
           <h3>Camper Cap</h3>
-          <p>A stylish addition to any outfit.</p>
+          <p>
+            A stylish addition to any outfit. Top off your look with our sleek
+            camper caps—minimal design, maximum impact.
+          </p>
           <span class="price">R299</span>
           <button class="add-to-cart">Add to Cart</button>
         </div>
@@ -109,5 +134,13 @@
       </div>
     </footer>
     <script src="script.js"></script>
+    <div id="cart-sidebar">
+      <button class="close-cart-btn" onclick="toggleCart()">Close</button>
+      <div class="cart-items"></div>
+      <div class="cart-footer">
+        <button onclick="proceedToCheckout()">Checkout</button>
+        <button onclick="clearCart()">Clear Cart</button>
+      </div>
+    </div>
   </body>
 </html>

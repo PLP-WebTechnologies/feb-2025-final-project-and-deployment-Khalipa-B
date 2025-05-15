@@ -28,12 +28,25 @@
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </nav>
-        <button class="cart-btn" onclick="toggleCart()">
+        <form class="search-form" onsubmit="searchProducts(event)">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search products..."
+          />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <a href="#" class="cart-btn" onclick="toggleCart()">
           <i class="fas fa-shopping-cart"></i>
           <span class="cart-count">0</span>
-        </button>
+        </a>
       </div>
     </header>
+
+    <div id="cart-sidebar">
+      <div class="cart-items"></div>
+      <div class="cart-footer"></div>
+    </div>
 
     <main class="contact-section">
       <h1>Contact Us</h1>
@@ -112,4 +125,5 @@
       </div>
     </footer>
   </body>
+  <script src="script.js"></script>
 </html>

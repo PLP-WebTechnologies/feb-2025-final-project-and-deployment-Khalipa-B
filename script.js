@@ -1,92 +1,193 @@
-// This file contains the main JavaScript functionality for the website, including handling navigation, page transitions, and any interactive elements.
+// Global cart array
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Navigation functionality
-  const navLinks = document.querySelectorAll(".nav-link");
-  navLinks.forEach((link) => {
-    link.addEventListener("click", function (event) {
-      event.preventDefault();
-      const targetPage = this.getAttribute("href");
-      showPage(targetPage);
-    });
-  });
-
-  // Function to show the selected page
-  function showPage(page) {
-    const pages = document.querySelectorAll(".page");
-    pages.forEach((p) => {
-      p.classList.add("hidden");
-    });
-    document.querySelector(page).classList.remove("hidden");
-  }
-
-  // Initial page load
-  showPage("#home-page");
-});
-
-// This file manages the shopping cart functionality, including adding items to the cart, updating quantities, and calculating totals.
-
-let cart = [];
-
-// Function to add an item to the cart
-function addToCart(product, price, image) {
-  const item = {
-    product,
-    price,
-    image,
-    quantity: 1,
-  };
-
-  // Check if the item is already in the cart
-  const existingItemIndex = cart.findIndex(
-    (cartItem) => cartItem.product === product
-  );
-  if (existingItemIndex > -1) {
-    // If it exists, increase the quantity
-    cart[existingItemIndex].quantity += 1;
+// Function to toggle the cart sidebar
+function toggleCart() {
+  const cartSidebar = document.getElementById("cart-sidebar");
+  if (cartSidebar) {
+    cartSidebar.classList.toggle("open");
   } else {
-    // If it doesn't exist, add it to the cart
-    cart.push(item);
+    console.error("Cart sidebar element not found.");
   }
+}
 
-  updateCartDisplay();
+// Function to update the cart count
+function updateCartCount() {
+  const cartCountElement = document.querySelector(".cart-count");
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartCountElement.textContent = totalItems;
 }
 
 // Function to update the cart display
 function updateCartDisplay() {
-  const cartItemsContainer = document.getElementById("cart-items");
-  const cartTotal = document.getElementById("cart-total");
-  cartItemsContainer.innerHTML = "";
+  const cartContainer = document.querySelector("#cart-sidebar .cart-items");
+  const cartFooter = document.querySelector("#cart-sidebar .cart-footer");
+  cartContainer.innerHTML = "";
+
+  if (cart.length === 0) {
+    cartContainer.innerHTML = "<p>Your cart is empty.</p>";
+    cartFooter.innerHTML = "";
+    return;
+  }
+
   let total = 0;
-
-  cart.forEach((item) => {
-    const itemTotal = item.price * item.quantity;
-    total += itemTotal;
-
+  cart.forEach((item, index) => {
+    total += item.price * item.quantity;
     const cartItem = document.createElement("div");
     cartItem.classList.add("cart-item");
     cartItem.innerHTML = `
-            <img src="${item.image}" alt="${item.product}">
-            <div class="cart-item-info">
-                <h4>${item.product}</h4>
-                <p>Price: $${item.price.toFixed(2)} x ${item.quantity}</p>
-                <p>Total: $${itemTotal.toFixed(2)}</p>
-            </div>
-        `;
-    cartItemsContainer.appendChild(cartItem);
+      <img src="${item.image}" alt="${item.name}" />
+      <div>
+        <h4>${item.name}</h4>
+        <p>Price: R${item.price}</p>
+        <p>Quantity: 
+          <button onclick="decreaseQuantity(${index})">-</button>
+          ${item.quantity}
+          <button onclick="increaseQuantity(${index})">+</button>
+        </p>
+        <button onclick="removeFromCart(${index})">Remove</button>
+      </div>
+    `;
+    cartContainer.appendChild(cartItem);
   });
 
-  cartTotal.innerText = `$${total.toFixed(2)}`;
+  cartFooter.innerHTML = `
+    <p>Total: R${total}</p>
+    <button onclick="proceedToCheckout()">Checkout</button>
+    <button onclick="clearCart()">Clear Cart</button>
+  `;
+}
+
+// Function to add an item to the cart
+function addToCart(name, price, image) {
+  // Check if the item already exists in the cart
+  const existingItem = cart.find((item) => item.name === name);
+  if (existingItem) {
+    // If the item exists, increase its quantity
+    existingItem.quantity += 1;
+  } else {
+    // If the item does not exist, add it to the cart
+    cart.push({ name, price, image, quantity: 1 });
+  }
+
+  // Save the updated cart to localStorage
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Update the cart display and count
+  updateCartDisplay();
+  updateCartCount();
 }
 
 // Function to remove an item from the cart
-function removeFromCart(product) {
-  cart = cart.filter((item) => item.product !== product);
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
   updateCartDisplay();
+  updateCartCount(); // Update the cart count
 }
 
 // Function to clear the cart
 function clearCart() {
-  cart = [];
-  updateCartDisplay();
+  if (confirm("Are you sure you want to clear the cart?")) {
+    cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+    updateCartDisplay();
+    updateCartCount(); // Update the cart count
+  }
 }
+
+// Function to increase the quantity of an item
+function increaseQuantity(index) {
+  cart[index].quantity += 1;
+  localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+  updateCartDisplay();
+  updateCartCount(); // Update the cart count
+}
+
+// Function to decrease the quantity of an item
+function decreaseQuantity(index) {
+  if (cart[index].quantity > 1) {
+    cart[index].quantity -= 1;
+  } else {
+    removeFromCart(index);
+  }
+  localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+  updateCartDisplay();
+  updateCartCount(); // Update the cart count
+}
+
+// Function to proceed to the checkout page
+function proceedToCheckout() {
+  if (cart.length === 0) {
+    alert("Your cart is empty. Add items to proceed to checkout.");
+    return;
+  }
+  // Redirect to the checkout page
+  window.location.href = "checkout.html";
+}
+
+// Function to display checkout items
+function displayCheckoutItems() {
+  const checkoutItemsContainer = document.getElementById("checkout-items");
+  checkoutItemsContainer.innerHTML = "";
+
+  if (cart.length === 0) {
+    checkoutItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+    return;
+  }
+
+  let total = 0;
+  cart.forEach((item) => {
+    total += item.price * item.quantity;
+    const checkoutItem = document.createElement("div");
+    checkoutItem.classList.add("checkout-item");
+    checkoutItem.innerHTML = `
+      <h4>${item.name}</h4>
+      <p>Price: R${item.price}</p>
+      <p>Quantity: ${item.quantity}</p>
+    `;
+    checkoutItemsContainer.appendChild(checkoutItem);
+  });
+
+  const totalElement = document.createElement("p");
+  totalElement.innerHTML = `<strong>Total: R${total}</strong>`;
+  checkoutItemsContainer.appendChild(totalElement);
+}
+
+// Function to handle checkout form submission
+function handleCheckout(event) {
+  event.preventDefault(); // Prevent the default form submission behavior
+
+  const name = document.getElementById("name").value;
+  const address = document.getElementById("address").value;
+  const paymentMethod = document.getElementById("payment").value;
+
+  if (!name || !address || !paymentMethod) {
+    alert("Please fill in all the required fields.");
+    return;
+  }
+
+  // Simulate checkout process
+  alert(
+    `Thank you for your purchase, ${name}! Your order will be shipped to ${address}.`
+  );
+
+  // Clear the cart after successful checkout
+  clearCart();
+
+  // Redirect to a confirmation page or home page
+  window.location.href = "index.html";
+}
+
+// Initialize cart on page load
+document.addEventListener("DOMContentLoaded", () => {
+  // Retrieve the cart from localStorage or initialize it as an empty array
+  cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // Update the cart display and count
+  updateCartDisplay();
+  updateCartCount();
+
+  // Call this function on the checkout page
+  displayCheckoutItems();
+});

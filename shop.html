@@ -19,7 +19,10 @@
   <body>
     <header>
       <div class="nav-container">
-        <a href="index.html" class="logo">/k^t/</a>
+        <a href="index.html" class="logo"
+          ><img src="images/_k^t  Logo_white.png" alt="/k^t/ logo"
+        /></a>
+
         <nav>
           <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
@@ -28,26 +31,34 @@
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </nav>
-        <button class="cart-btn" onclick="toggleCart()">
+        <form class="search-form" onsubmit="searchProducts(event)">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search products..."
+          />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <a href="javascript:void(0);" class="cart-btn" onclick="toggleCart()">
           <i class="fas fa-shopping-cart"></i>
           <span class="cart-count">0</span>
-        </button>
+        </a>
       </div>
     </header>
 
     <!-- Shop Page Content -->
     <main class="container shop-page">
       <h1 class="text-center my-4">Shop Our Collection</h1>
-      <p class="text-center mb-4">
-        Discover our latest urban clothing collection designed for comfort and
-        style.
+      <p class="text-center">
+        Explore our range of oversized hoodies, tracksuits, and basic t-shirts
+        that are perfect for everyone. Shop now and elevate your style!
       </p>
       <div class="products-grid">
         <!-- Product Card: Oversized Hoodie -->
         <div class="product-card">
           <img src="images/oversized-hoodie.jpg" alt="Oversized Hoodie" />
           <h3>Oversized Hoodie</h3>
-          <p>Stay cozy and stylish.</p>
+          <p>Stay cozy and stylish with our oversized hoodie.</p>
           <span class="price">R799</span>
           <button
             class="add-to-cart"
@@ -61,7 +72,7 @@
         <div class="product-card">
           <img src="images/tracksuit.jpg" alt="Tracksuit" />
           <h3>Tracksuit</h3>
-          <p>Perfect for casual wear.</p>
+          <p>Perfect for workout and casual wear.</p>
           <span class="price">R1599</span>
           <button
             class="add-to-cart"
@@ -71,15 +82,15 @@
           </button>
         </div>
 
-        <!-- Product Card: Basic T-Shirt -->
+        <!-- Product Card: Oversized T-shirt -->
         <div class="product-card">
-          <img src="images/oversized-t-shirts.jpg" alt="Basic T-Shirt" />
-          <h3>Basic T-Shirt</h3>
+          <img src="images/oversized-t-shirts.jpg" alt="Oversized T-shirt" />
+          <h3>Oversized T-shirt</h3>
           <p>A wardrobe essential for everyone.</p>
           <span class="price">R699</span>
           <button
             class="add-to-cart"
-            onclick="addToCart('Basic T-Shirt', 699, 'images/oversized-t-shirts.jpg')"
+            onclick="addToCart('Oversized T-shirt', 699, 'images/oversized-t-shirts.jpg')"
           >
             Add to Cart
           </button>
@@ -87,13 +98,13 @@
 
         <!-- Product Card: Camper Cap -->
         <div class="product-card">
-          <img src="images/Camper-Cap.jpg" alt="Camper Cap" />
+          <img src="images/camper-cap.jpg" alt="Camper Cap" />
           <h3>Camper Cap</h3>
           <p>A must-have accessory for everyone.</p>
           <span class="price">R299</span>
           <button
             class="add-to-cart"
-            onclick="addToCart('Camper Cap', 299, 'images/Camper-Cap.jpg')"
+            onclick="addToCart('Camper Cap', 299, 'images/camper-cap.jpg')"
           >
             Add to Cart
           </button>
@@ -124,5 +135,14 @@
         </div>
       </div>
     </footer>
+    <script src="script.js"></script>
+    <div id="cart-sidebar">
+      <button class="close-cart-btn" onclick="toggleCart()">Close</button>
+      <div class="cart-items"></div>
+      <div class="cart-footer">
+        <button onclick="proceedToCheckout()">Checkout</button>
+        <button onclick="clearCart()">Clear Cart</button>
+      </div>
+    </div>
   </body>
 </html>
