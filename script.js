@@ -26,11 +26,13 @@ function updateCartDisplay() {
 
   if (cart.length === 0) {
     cartContainer.innerHTML = "<p>Your cart is empty.</p>";
-    cartFooter.innerHTML = "";
+    cartFooter.style.display = "none";
     return;
   }
 
+  cartFooter.style.display = "block";
   let total = 0;
+
   cart.forEach((item, index) => {
     total += item.price * item.quantity;
     const cartItem = document.createElement("div");
@@ -52,7 +54,7 @@ function updateCartDisplay() {
   });
 
   cartFooter.innerHTML = `
-    <p>Total: R${total}</p>
+    <p>Total: R${total.toFixed(2)}</p>
     <button onclick="proceedToCheckout()">Checkout</button>
     <button onclick="clearCart()">Clear Cart</button>
   `;
@@ -60,13 +62,10 @@ function updateCartDisplay() {
 
 // Function to add an item to the cart
 function addToCart(name, price, image) {
-  // Check if the item already exists in the cart
   const existingItem = cart.find((item) => item.name === name);
   if (existingItem) {
-    // If the item exists, increase its quantity
     existingItem.quantity += 1;
   } else {
-    // If the item does not exist, add it to the cart
     cart.push({ name, price, image, quantity: 1 });
   }
 
@@ -77,6 +76,20 @@ function addToCart(name, price, image) {
   updateCartDisplay();
   updateCartCount();
 }
+
+// Attach event listeners to Add-to-Cart buttons
+document.querySelectorAll(".add-to-cart").forEach((button, index) => {
+  button.addEventListener("click", () => {
+    const productCard = button.closest(".product-card");
+    const name = productCard.querySelector("h3").textContent;
+    const price = parseFloat(
+      productCard.querySelector(".price").textContent.replace("R", "")
+    );
+    const image = productCard.querySelector("img").src;
+
+    addToCart(name, price, image);
+  });
+});
 
 // Function to remove an item from the cart
 function removeFromCart(index) {
